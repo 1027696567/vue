@@ -5,8 +5,8 @@
       <div class="topHead">
         <div class="buttonList">
           <el-button @click="addInfo">新建</el-button>
-          <el-button>修改</el-button>
-          <el-button type="primary">审核</el-button>
+          <el-button @click="editInfo">修改</el-button>
+          <el-button @click="verifyInfo" type="primary">审核</el-button>
           <el-button type="primary">删除</el-button>
         </div>
       </div>
@@ -25,19 +25,25 @@
         </el-table>
       </el-main>
       <AddInfo v-if="addInfoVisible" ref="AddInfo"></AddInfo>
+      <EditInfo v-if="editInfoVisible" ref="EditInfo"></EditInfo>
+      <VerifyInfo v-if="verifyInfoVisible" ref="VerifyInfo"></VerifyInfo>
     </div>
 </template>
 
 <script>
 import AddInfo from '../../components/menu1/addInfo'
+import EditInfo from '../../components/menu1/editInfo'
+import VerifyInfo from '../../components/menu1/verifyInfo'
 import { selectAllCompanyInfo } from '../../api/menu1/api'
 export default {
-  components: { AddInfo },
+  components: { AddInfo, EditInfo, VerifyInfo },
   data () {
     return {
       tableData: [],
       currentRow: null,
-      addInfoVisible: false
+      addInfoVisible: false,
+      editInfoVisible: false,
+      verifyInfoVisible: false
     }
   },
   methods: {
@@ -52,6 +58,30 @@ export default {
       this.$nextTick(() => {
         this.$refs.AddInfo.init()
       })
+    },
+    editInfo () {
+      if (this.currentRow != null) {
+        if (sessionStorage.getItem('user') === this.currentRow.createUserName) {
+          this.editInfoVisible = true
+          this.$nextTick(() => {
+            this.$refs.EditInfo.init(this.currentRow)
+          })
+        } else {
+          this.$message.error('非创建人不能修改')
+        }
+      } else {
+        this.$message.error('请选择供应商')
+      }
+    },
+    verifyInfo () {
+      if (this.currentRow != null) {
+        this.verifyInfoVisible = true
+        this.$nextTick(() => {
+          this.$refs.VerifyInfo.init(this.currentRow)
+        })
+      } else {
+        this.$message.error('请选择供应商')
+      }
     },
     async selectAllCompanyInfo () {
       const data = await selectAllCompanyInfo()
