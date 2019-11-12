@@ -64,57 +64,95 @@
             </el-form-item>
           </el-col>
         </el-row>
-       <h1 style="-webkit-margin-before: 0px;">审核填报</h1>
+      </el-form>
+      <h1 style="-webkit-margin-before: 0px;">审核填报</h1>
+      <el-form label-position="right" ref="verityForm" :model="verityForm" label-width="80px">
         <el-row>
           <el-col :span="12">
             <el-form-item label="分类：" prop="contact" style="width:320px">
-              <el-select v-model="form.fenLei" placeholder="请选择分类">
-                <el-option label="一" value="shanghai"></el-option>
-                <el-option label="二" value="beijing"></el-option>
+              <el-select v-model="verityForm.classify" placeholder="请选择...">
+                <el-option label="战略供应商" value="1"></el-option>
+                <el-option label="瓶颈供应商" value="2"></el-option>
+                <el-option label="杠杆供应商" value="3"></el-option>
+                <el-option label="一般供应商" value="4"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="分级：" prop="telephone" style="width:320px">
-              <el-select v-model="form.fenJi" placeholder="请选择分级">
-                <el-option label="一" value="shanghai"></el-option>
-                <el-option label="二" value="beijing"></el-option>
+              <el-select v-model="verityForm.grade" placeholder="请选择...">
+                <el-option label="Ⅰ级" value="1"></el-option>
+                <el-option label="Ⅱ级" value="2"></el-option>
+                <el-option label="Ⅲ级" value="3"></el-option>
+                <el-option label="Ⅳ级" value="4"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
         </el-row>
         <el-form-item label="评价：" prop="textarea" style="width:650px">
-          <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}" placeholder="请输入备注信息" resize=none v-model="form.textarea"></el-input>
+          <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}" placeholder="请输入备注信息" resize=none v-model="verityForm.textarea"></el-input>
         </el-form-item>
         <el-form-item style="margin:20px 0 0 180px">
-          <el-button type="primary" @click="onSubmit">确认</el-button>
-          <el-button>取消</el-button>
+          <el-button type="primary" @click="onSubmit">通过</el-button>
+          <el-button type="danger" @click="reset">拒绝</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
   </div>
 </template>
 <script>
+import { addVerityInfo, getVerityInfo, updateVerityInfo, updateCompanyInfo } from '../../api/menu1/api'
 export default {
   data () {
     return {
       dialogVisible: false,
       form: {
-        type: []
+        companyNumber: ''
+      },
+      verityForm: {
+        classify: null,
+        grade: null,
+        textarea: null,
+        companyId: null
       }
     }
   },
   methods: {
-    init (currentData) {
+    async init (currentData) {
       this.dialogVisible = true
       this.form = currentData
+      const data = await getVerityInfo({companyId: currentData.companyId})
+      if (data.data !== '') {
+        this.verityForm = data.data
+      } else {
+        this.verityForm.verityId = null
+        this.verityForm.classify = null
+        this.verityForm.grade = null
+        this.verityForm.textarea = null
+        this.verityForm.companyId = currentData.companyId
+      }
     },
-    onSubmit () {
-      console.log(this.form)
+    async onSubmit () {
+      if (this.verityForm.verityId !== null) {
+        await updateVerityInfo(this.verityForm)
+      } else {
+        await addVerityInfo(this.verityForm)
+      }
+      this.parent()
+      this.dialogVisible = false
+      this.$message.success('审核完成')
+    },
+    async reset () {
+      await updateCompanyInfo({companyId: this.verityForm.companyId})
+      this.parent()
+      this.dialogVisible = false
+      this.$message.success('状态已修改')
+    },
+    parent () {
+      this.$parent.selectAllCompanyInfo()
     }
   },
   created () {
-
   }
 }
 </script>

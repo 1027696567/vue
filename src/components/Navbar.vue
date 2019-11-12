@@ -1,6 +1,6 @@
 <template>
     <div class="outPatientName">
-      <span>房企管理系统</span>
+      <span>房地产企业管理系统</span>
         <div class="block">
           <el-dropdown @command="handleCommand">
             <span class="el-dropdown-link-one">

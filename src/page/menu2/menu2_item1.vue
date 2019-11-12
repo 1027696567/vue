@@ -1,14 +1,14 @@
 <template>
-    <div class="menu1_item1">
-    <!-- 供应商管理 -->
+    <div class="menu2_item1">
+    <!-- 合同管理 -->
       <div class="blank">
       </div>
       <div class="topHead">
         <div class="buttonList">
-          <el-button @click="addInfo">新建</el-button>
-          <el-button @click="editInfo">修改</el-button>
-          <el-button @click="verifyInfo" type="primary">审核</el-button>
-          <el-button @click="deleteInfo" type="danger">删除</el-button>
+          <el-button @click="addContract" >新建合同</el-button>
+          <el-button @click="addInfo" >签订合同</el-button>
+          <el-button @click="editInfo" >变更合同</el-button>
+          <el-button type="primary">解除合同</el-button>
         </div>
       </div>
       <el-main>
@@ -35,7 +35,7 @@
 import AddInfo from '../../components/menu1/addInfo'
 import EditInfo from '../../components/menu1/editInfo'
 import VerifyInfo from '../../components/menu1/verifyInfo'
-import { selectAllCompanyInfo, getAuthorization, deleteCompanyInfo } from '../../api/menu1/api'
+import { selectAllCompanyInfo, getAuthorization } from '../../api/menu1/api'
 export default {
   components: { AddInfo, EditInfo, VerifyInfo },
   data () {
@@ -54,11 +54,8 @@ export default {
     handleCurrentChange (val) {
       this.currentRow = val
     },
-    addInfo () {
-      this.addInfoVisible = true
-      this.$nextTick(() => {
-        this.$refs.AddInfo.init()
-      })
+    addContract () {
+      this.$router.push('/addContract')
     },
     editInfo () {
       if (this.currentRow != null) {
@@ -77,21 +74,10 @@ export default {
     verifyInfo () {
       getAuthorization().then((res) => {
         if (this.currentRow != null) {
-          if (this.currentRow.status === 0) {
-            this.verifyInfoVisible = true
-            this.$nextTick(() => {
-              this.$refs.VerifyInfo.init(this.currentRow)
-            })
-          } else {
-            this.$confirm('确认重新审核？')
-              .then(_ => {
-                this.verifyInfoVisible = true
-                this.$nextTick(() => {
-                  this.$refs.VerifyInfo.init(this.currentRow)
-                })
-              })
-              .catch(_ => {})
-          }
+          this.verifyInfoVisible = true
+          this.$nextTick(() => {
+            this.$refs.VerifyInfo.init(this.currentRow)
+          })
         } else {
           this.$message.error('请选择供应商')
         }
@@ -100,18 +86,7 @@ export default {
     async selectAllCompanyInfo () {
       const data = await selectAllCompanyInfo()
       this.tableData = data.data
-    },
-    deleteInfo () {
-      if (this.currentRow !== null) {
-        this.$confirm('删除后不可恢复，确认删除？')
-          .then(async _ => {
-            await deleteCompanyInfo({companyId: this.currentRow.companyId})
-            this.selectAllCompanyInfo()
-          })
-          .catch(_ => {})
-      } else {
-        this.$message.error('请选择供应商')
-      }
+      console.log(this.tableData)
     }
   },
   created () {

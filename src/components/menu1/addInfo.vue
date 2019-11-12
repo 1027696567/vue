@@ -1,65 +1,65 @@
 <template>
   <div class="addInfo">
     <!-- 添加供应商信息弹框 -->
-    <el-dialog title="新建" :visible.sync="dialogVisible" width="700px">
+    <el-dialog title="新建" :visible.sync="dialogVisible" width="700px" :before-close="closeDiv">
       <el-form label-position="right" :rules="rules" ref="form" :model="form" label-width="80px">
         <el-row>
           <el-col :span="12">
             <el-form-item label="机构代码：" prop="companyNumber" style="width:320px">
-              <el-input v-model="form.name"></el-input>
+              <el-input v-model="form.companyNumber"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="机构名称：" prop="companyName" style="width:320px">
-              <el-input v-model="form.name"></el-input>
+              <el-input v-model="form.companyName"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="注册地：" prop="registeredPlace" style="width:320px">
-              <el-input v-model="form.name"></el-input>
+              <el-input v-model="form.registeredPlace"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="评级资质：" prop="creditRating" style="width:320px">
-              <el-input v-model="form.name"></el-input>
+              <el-input v-model="form.creditRating"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="法人代表：" prop="corporateRepresentative" style="width:320px">
-              <el-input v-model="form.name"></el-input>
+              <el-input v-model="form.corporateRepresentative"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="固定资产：" prop="permanentAssets" style="width:320px">
-              <el-input v-model="form.name"></el-input>
+              <el-input v-model="form.permanentAssets"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="E-mail：" prop="email" style="width:320px">
-              <el-input v-model="form.name"></el-input>
+              <el-input v-model="form.email"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="传真：" prop="fax" style="width:320px">
-              <el-input v-model="form.name"></el-input>
+              <el-input v-model="form.fax"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="联系人：" prop="contact" style="width:320px">
-              <el-input v-model="form.name"></el-input>
+              <el-input v-model="form.contact"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="联系电话：" prop="telephone" style="width:320px">
-              <el-input v-model.number="form.name"></el-input>
+              <el-input v-model.number="form.telephone"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -67,20 +67,31 @@
           <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}" placeholder="请输入备注信息" resize=none v-model="form.textarea"></el-input>
         </el-form-item>
         <el-form-item style="margin:20px 0 0 180px">
-          <el-button type="primary" @click="onSubmit">确认</el-button>
-          <el-button>取消</el-button>
+          <el-button type="primary" @click="onSubmit('form')">确认</el-button>
+          <el-button @click="resetForm('form')">取消</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
   </div>
 </template>
 <script>
+import { addInfo } from '../../api/menu1/api'
 export default {
   data () {
     return {
       dialogVisible: false,
       form: {
-        type: []
+        companyNumber: '',
+        companyName: '',
+        registeredPlace: '',
+        creditRating: '',
+        corporateRepresentative: '',
+        permanentAssets: '',
+        email: '',
+        fax: '',
+        contact: '',
+        telephone: '',
+        textarea: ''
       },
       rules: {
         companyNumber: [
@@ -111,7 +122,8 @@ export default {
           {required: true, message: '请输入联系人', trigger: 'blur'}
         ],
         telephone: [
-          {required: true, message: '请输入联系电话', trigger: 'blur'}
+          {required: true, message: '请输入联系电话', trigger: 'blur'},
+          {type: 'number', message: '年龄必须为数字值'}
         ]
       }
     }
@@ -120,8 +132,35 @@ export default {
     init () {
       this.dialogVisible = true
     },
-    onSubmit () {
-      console.log(this.form)
+    onSubmit (form) {
+      this.$refs[form].validate(async (valid) => {
+        if (valid) {
+          this.form.createUserName = sessionStorage.getItem('user')
+          await addInfo(this.form).then((res) => {
+            if (res.data === 1) {
+              this.$message.success('创建成功！')
+              this.$refs[form].resetFields()
+              this.dialogVisible = false
+              this.parent()
+            } else {
+              this.$message.error('机构已存在！')
+            }
+          })
+        } else {
+          return false
+        }
+      })
+    },
+    parent () {
+      this.$parent.selectAllCompanyInfo()
+    },
+    resetForm (form) {
+      this.$refs[form].resetFields()
+      this.dialogVisible = false
+    },
+    closeDiv (done) {
+      this.$refs['form'].resetFields()
+      done()
     }
   },
   created () {

@@ -1,7 +1,7 @@
 <template>
   <div class="editInfo">
     <!-- 修改供应商信息弹框 -->
-    <el-dialog title="修改" :visible.sync="dialogVisible" width="700px">
+    <el-dialog title="修改" :visible.sync="dialogVisible" width="700px" :before-close="refresh">
       <el-form label-position="right" :rules="rules" ref="form" :model="form" label-width="80px">
         <el-row>
           <el-col :span="12">
@@ -68,39 +68,32 @@
         </el-form-item>
         <el-form-item style="margin:20px 0 0 180px">
           <el-button type="primary" @click="onSubmit">确认</el-button>
-          <el-button>取消</el-button>
+          <el-button @click="resetForm">取消</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
   </div>
 </template>
 <script>
+import { editInfo } from '../../api/menu1/api'
 export default {
   data () {
     return {
       dialogVisible: false,
       form: {
-        type: []
+        companyNumber: '',
+        companyName: '',
+        registeredPlace: '',
+        creditRating: '',
+        corporateRepresentative: '',
+        permanentAssets: '',
+        email: '',
+        fax: '',
+        contact: '',
+        telephone: '',
+        textarea: ''
       },
       rules: {
-        companyNumber: [
-          {required: true, message: '请输入机构代码', trigger: 'blur'}
-        ],
-        companyName: [
-          {required: true, message: '请输入机构名称', trigger: 'blur'}
-        ],
-        registeredPlace: [
-          {required: true, message: '请输入公司注册地', trigger: 'blur'}
-        ],
-        creditRating: [
-          {required: true, message: '请输入评级资质', trigger: 'blur'}
-        ],
-        corporateRepresentative: [
-          {required: true, message: '请输入法人代表', trigger: 'blur'}
-        ],
-        permanentAssets: [
-          {required: true, message: '请输入固定资产', trigger: 'blur'}
-        ],
         email: [
           {required: true, message: '请输入邮箱', trigger: 'blur'}
         ],
@@ -121,8 +114,21 @@ export default {
       this.dialogVisible = true
       this.form = currentData
     },
-    onSubmit () {
-      console.log(this.form)
+    async onSubmit () {
+      await editInfo(this.form)
+      this.parent()
+      this.$message.success('修改成功！')
+      this.dialogVisible = false
+    },
+    parent () {
+      this.$parent.selectAllCompanyInfo()
+    },
+    refresh (done) {
+      this.parent()
+      done()
+    },
+    resetForm () {
+      this.dialogVisible = false
     }
   },
   created () {

@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import Ivy from '../assets/ivy.png'
+import Ivy from '../assets/JL.png'
 export default {
   name: 'v-sidebar',
   data () {

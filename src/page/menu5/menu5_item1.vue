@@ -2,7 +2,7 @@
     <div class="menu5_item1">
       <el-main>
         <el-table
-            :data="tableData"
+            :data="tableData.filter(data => !search || data.username.toLowerCase().includes(search.toLowerCase()) || data.realName.toLowerCase().includes(search.toLowerCase()))"
             style="width: 100%"
             max-height="650"
             border>
@@ -48,7 +48,14 @@
                 <span>{{ scope.row.status }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="操作" min-width="180">
+            <el-table-column min-width="180">
+              <template slot="header" slot-scope="scope">
+                <el-input
+                  style="width:200px"
+                  v-model="search"
+                  size="mini"
+                  placeholder="输入用户账号或姓名搜索"/>
+              </template>
               <template slot-scope="scope">
                 <el-button
                   size="mini"
@@ -72,8 +79,16 @@ export default {
   components: { EditUser },
   data () {
     return {
-      tableData: null,
-      editUserVisible: false
+      tableData: {
+        username: '',
+        realName: '',
+        roleName: '',
+        email: '',
+        mobile: '',
+        status: ''
+      },
+      editUserVisible: false,
+      search: ''
     }
   },
   methods: {
