@@ -6,7 +6,7 @@ import ElementUI from 'element-ui'
 import * as types from '../store/mutations_type'
 // axios 配置
 axios.defaults.timeout = 5000
-axios.defaults.baseURL = 'http://localhost:7011'
+axios.defaults.baseURL = 'http://127.0.0.1:7011'
 axios.defaults.headers.contentType = 'application/json'
 export default axios
 axios.interceptors.request.use(

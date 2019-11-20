@@ -33,7 +33,6 @@ export default {
   created () {
     // 从sessionStorage得到menuData
     this.currentNavItems = JSON.parse(sessionStorage.getItem('menuData'))
-    console.log(this.currentNavItems)
   }
 }
 </script>

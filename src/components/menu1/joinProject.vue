@@ -6,30 +6,31 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="机构代码：" prop="companyNumber" style="width:320px">
-              <el-input v-model="form.name"></el-input>
+              <el-input v-model="form.companyNumber" disabled></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="机构名称：" prop="companyName" style="width:320px">
-              <el-input v-model="form.name"></el-input>
+              <el-input v-model="form.companyName" disabled></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="投标人：" prop="companyNumber" style="width:320px">
-              <el-input v-model="form.name"></el-input>
+            <el-form-item label="投标人：" prop="createUserName" style="width:320px">
+              <el-input v-model="form.createUserName" disabled></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="投标时间：" prop="companyName" style="width:320px">
-              <el-input v-model="form.name"></el-input>
+            <el-form-item label="投标时间：" prop="biddingTime" style="width:320px">
+              <el-date-picker v-model="form.biddingTime" type="datetime" placeholder="请选择开始时间" default-time="12:00:00" style="width:205px" disabled>
+              </el-date-picker>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="上传投标书：" prop="companyNumber" style="width:320px">
+            <el-form-item label="上传投标书：" prop="uploadBook" style="width:320px">
               <el-upload
                 class="upload-demo"
                 action="http://localhost:7011/upload"
@@ -46,8 +47,8 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="备注：" prop="textarea" style="width:650px">
-          <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}" placeholder="请输入备注信息" resize=none v-model="form.textarea"></el-input>
+        <el-form-item label="备注：" prop="remarks" style="width:650px">
+          <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}" placeholder="请输入备注信息" resize=none v-model="form.remarks"></el-input>
         </el-form-item>
         <el-form-item style="margin:20px 0 0 180px">
           <el-button type="primary" @click="onSubmit">确认</el-button>
@@ -58,22 +59,29 @@
   </div>
 </template>
 <script>
+import { selectUserCompanyInfo, addTenderInfo } from '../../api/menu1/api'
 export default {
   data () {
     return {
       dialogVisible: false,
-      form: {
-        type: []
-      },
+      form: {},
+      addForm: {},
       fileList: []
     }
   },
   methods: {
-    init () {
+    init (data) {
+      this.addForm.itemId = data.itemId
       this.dialogVisible = true
     },
-    onSubmit () {
-      console.log(this.form)
+    async onSubmit () {
+      this.addForm.tenderUserName = this.form.createUserName
+      this.addForm.tenderTime = this.form.biddingTime
+      this.addForm.remarks = this.form.remarks
+      console.log(this.addForm)
+      await addTenderInfo(this.addForm)
+      this.dialogVisible = false
+      this.$message.success('投标成功！')
     },
     handleRemove (file, fileList) {
       console.log(file, fileList)
@@ -86,9 +94,15 @@ export default {
     },
     beforeRemove (file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`)
+    },
+    async selectUserCompanyInfo () {
+      const data = await selectUserCompanyInfo({username: sessionStorage.getItem('user')})
+      this.form = data.data
+      this.form.biddingTime = new Date()
     }
   },
   created () {
+    this.selectUserCompanyInfo()
   }
 }
 </script>

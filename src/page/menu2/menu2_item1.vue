@@ -5,46 +5,34 @@
       </div>
       <div class="topHead">
         <div class="buttonList">
-          <el-button @click="addContract" >新建合同</el-button>
-          <el-button @click="addInfo" >签订合同</el-button>
-          <el-button @click="editInfo" >变更合同</el-button>
-          <el-button type="primary">解除合同</el-button>
+          <el-button @click="addContract" >签订合同</el-button>
+          <el-button @click="editContract" >变更合同</el-button>
+          <el-button @click="deleteContract" type="primary">解除合同</el-button>
         </div>
       </div>
       <el-main>
-        <el-table strip border ref="singleTable" :data="tableData" highlight-current-row @current-change="handleCurrentChange" style="width: 100%">
+        <el-table :data="tableData" style="width: 100%" row-key="contractId" :row-class-name="tableRowClassName" highlight-current-row @current-change="handleCurrentChange" border lazy :load="load" :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
           <el-table-column type="index" width="50"></el-table-column>
-          <el-table-column property="companyNumber" label="机构代码" width="180"></el-table-column>
-          <el-table-column property="companyName" label="机构名称" width="180"></el-table-column>
-          <el-table-column property="contact" label="联系人" width="180"></el-table-column>
-          <el-table-column property="telephone" label="联系电话" width="180"></el-table-column>
-          <el-table-column property="email" label="E-mail" width="180"></el-table-column>
-          <el-table-column property="createUserName" label="创建人" width="180"></el-table-column>
-          <el-table-column property="createTime" label="创建时间" width="180"></el-table-column>
-          <el-table-column property="statusName" label="状态" width="180"></el-table-column>
-          <el-table-column property="textarea" label="备注"></el-table-column>
+          <el-table-column prop="contractNumber" label="合同编号" width="200"></el-table-column>
+          <el-table-column prop="contractName" label="合同名称" width="200"></el-table-column>
+          <el-table-column prop="itemNumber" label="项目编号" width="200"></el-table-column>
+          <el-table-column prop="itemName" label="项目名称" width="200"></el-table-column>
+          <el-table-column prop="contractTypesName" label="合同性质" width="200"></el-table-column>
+          <el-table-column prop="contractTime" label="签约时间" width="200"></el-table-column>
+          <el-table-column prop="dutyUsername" label="责任人" width="200"></el-table-column>
+          <el-table-column prop="createUsername" label="制单人"></el-table-column>
         </el-table>
       </el-main>
-      <AddInfo v-if="addInfoVisible" ref="AddInfo"></AddInfo>
-      <EditInfo v-if="editInfoVisible" ref="EditInfo"></EditInfo>
-      <VerifyInfo v-if="verifyInfoVisible" ref="VerifyInfo"></VerifyInfo>
     </div>
 </template>
 
 <script>
-import AddInfo from '../../components/menu1/addInfo'
-import EditInfo from '../../components/menu1/editInfo'
-import VerifyInfo from '../../components/menu1/verifyInfo'
-import { selectAllCompanyInfo, getAuthorization } from '../../api/menu1/api'
+import { selectAllContractInfo, selectChildren, deleteContract } from '../../api/menu2/api'
 export default {
-  components: { AddInfo, EditInfo, VerifyInfo },
   data () {
     return {
       tableData: [],
-      currentRow: null,
-      addInfoVisible: false,
-      editInfoVisible: false,
-      verifyInfoVisible: false
+      currentRow: null
     }
   },
   methods: {
@@ -57,40 +45,49 @@ export default {
     addContract () {
       this.$router.push('/addContract')
     },
-    editInfo () {
-      if (this.currentRow != null) {
-        if (sessionStorage.getItem('user') === this.currentRow.createUserName) {
-          this.editInfoVisible = true
-          this.$nextTick(() => {
-            this.$refs.EditInfo.init(this.currentRow)
-          })
-        } else {
-          this.$message.error('非创建人不能修改')
-        }
+    async selectAllContractInfo () {
+      const data = await selectAllContractInfo()
+      this.tableData = data.data
+    },
+    load (tree, treeNode, resolve) {
+      setTimeout(async () => {
+        const data = await selectChildren({fatherNumber: tree.contractNumber})
+        resolve(data.data)
+      }, 1000)
+    },
+    editContract () {
+      if (this.currentRow !== null) {
+        sessionStorage.setItem('contractNumber', this.currentRow.contractNumber)
+        this.$router.push('editContract')
       } else {
-        this.$message.error('请选择供应商')
+        this.$message.error('请选择一项合同')
       }
     },
-    verifyInfo () {
-      getAuthorization().then((res) => {
-        if (this.currentRow != null) {
-          this.verifyInfoVisible = true
-          this.$nextTick(() => {
-            this.$refs.VerifyInfo.init(this.currentRow)
+    deleteContract () {
+      if (this.currentRow !== null) {
+        this.$confirm('此操作不可恢复，确认继续？')
+          .then(_ => {
+            this.verifyInfoVisible = true
+            this.$nextTick(async () => {
+              await deleteContract(this.currentRow)
+              this.selectAllContractInfo()
+              this.$message.success('解除成功')
+            })
           })
-        } else {
-          this.$message.error('请选择供应商')
-        }
-      })
+          .catch(_ => {})
+      } else {
+        this.$message.error('请选择一项合同')
+      }
     },
-    async selectAllCompanyInfo () {
-      const data = await selectAllCompanyInfo()
-      this.tableData = data.data
-      console.log(this.tableData)
+    tableRowClassName ({row, rowIndex}) {
+      if (row.contractTypes === '3') {
+        return 'success-row'
+      }
+      return ''
     }
   },
   created () {
-    this.selectAllCompanyInfo()
+    this.selectAllContractInfo()
   }
 }
 </script>
@@ -115,4 +112,10 @@ export default {
     float:left
   }
 
+  .el-table .warning-row {
+    background: oldlace;
+  }
+  .el-table .success-row {
+    background: #f0f9eb;
+  }
 </style>

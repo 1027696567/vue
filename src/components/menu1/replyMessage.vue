@@ -32,7 +32,7 @@
         <el-row>
           <el-col :span="24">
             <el-form-item label="发布内容：" prop="publishContent" style="width:939px">
-              <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}" placeholder="请输入发布信息" resize=none v-model="form.publishContent"></el-input>
+              <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}" placeholder="请输入发布信息" resize=none v-model="form.publishContent" disabled></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -44,8 +44,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="回复人职位：" prop="reply_roles" style="width:300px">
-              <el-input v-model="form.reply_roles" disabled></el-input>
+            <el-form-item label="回复人职位：" prop="replyRoles" style="width:300px">
+              <el-input v-model="form.replyRoles" disabled></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -57,15 +57,15 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="回复人单位：" prop="reply_companyName" style="width:619.5px">
-              <el-input v-model="form.reply_companyName" disabled></el-input>
+            <el-form-item label="回复人单位：" prop="replyCompanyName" style="width:619.5px">
+              <el-input v-model="form.replyCompanyName" disabled></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
             <el-form-item label="回复内容：" prop="replyContent" style="width:939px">
-              <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}" placeholder="请输入回复信息" resize=none v-model="form.replyContent" disabled></el-input>
+              <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}" placeholder="请输入回复信息" resize=none v-model="form.replyContent"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -78,31 +78,37 @@
   </div>
 </template>
 <script>
-import { insertNoticeInfo, selectNoticeForm } from '../../api/menu1/api'
+import { selectNoticeForms, updateNoticeInfo } from '../../api/menu1/api'
 export default {
   data () {
     return {
       dialogVisible: false,
       form: {
-        publishContent: ''
+        replyContent: ''
       }
     }
   },
   methods: {
-    async init () {
-      const username = sessionStorage.getItem('user')
-      const data = await selectNoticeForm({username: username})
+    async init (currentRow) {
+      const replyUsername = sessionStorage.getItem('user')
+      const data = await selectNoticeForms({publishUsername: currentRow.publishUsername, replyUsername: replyUsername})
+      this.form.publishUsername = currentRow.publishUsername
       this.form.roles = data.data.roles.join()
+      this.form.publishTime = currentRow.publishTime
       this.form.companyName = data.data.companyName
-      this.form.publishUsername = username
-      this.form.publishTime = new Date()
+      this.form.publishContent = currentRow.publishContent
+      this.form.replyUsername = replyUsername
+      this.form.replyRoles = data.data.replyRoles.join()
+      this.form.replyTime = new Date()
+      this.form.replyCompanyName = data.data.replyCompanyName
+      this.form.noticeId = currentRow.noticeId
       this.dialogVisible = true
     },
     async onSubmit (form) {
-      await insertNoticeInfo(this.form)
+      await updateNoticeInfo(this.form)
       this.dialogVisible = false
       this.$refs[form].resetFields()
-      this.$message.success('发布成功')
+      this.$message.success('回复成功')
       this.parent()
     },
     closeDiv (done) {

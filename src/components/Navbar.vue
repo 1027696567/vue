@@ -69,6 +69,7 @@ export default {
       sessionStorage.removeItem('routes')
       sessionStorage.removeItem('user')
       sessionStorage.removeItem('menuData')
+      sessionStorage.removeItem('itemId')
       this.$router.push('/login')
     }
   },

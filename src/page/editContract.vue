@@ -1,11 +1,11 @@
 <template>
     <div class="editProject">
-    <!-- 签订合同页面 -->
+    <!-- 变更合同页面 -->
       <div class="blank">
       </div>
       <div class="topHead">
         <div class="buttonList">
-          <el-page-header @back="goBack" content="签订合同">
+          <el-page-header @back="goBack" content="变更合同">
           </el-page-header>
         </div>
       </div>
@@ -16,7 +16,7 @@
               <el-row>
                 <el-col :span="12">
                   <el-form-item label="项目编号：" prop="itemNumber" >
-                    <el-select v-model="form.itemNumber" @change="getRole($event)">
+                    <el-select v-model="form.itemNumber" @change="getRole($event)" disabled>
                       <el-option
                         v-for="item in itemInfo"
                         :key="item.itemId"
@@ -28,7 +28,7 @@
                 </el-col>
                 <el-col :span="12">
                   <el-form-item label="项目名称：" prop="itemName">
-                    <el-select v-model="form.itemName" @change="getList($event)">
+                    <el-select v-model="form.itemName" @change="getList($event)" disabled>
                       <el-option
                         v-for="item in itemInfo"
                         :key="item.itemId"
@@ -41,31 +41,31 @@
               </el-row>
               <el-row>
                 <el-col :span="12">
-                  <el-form-item label="合同编号：" prop="contractNumber"><el-input v-model="form.contractNumber"></el-input></el-form-item>
+                  <el-form-item label="合同编号：" prop="contractNumber"><el-input v-model="form.contractNumber" disabled></el-input></el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="合同名称：" prop="contractName"><el-input v-model="form.contractName"></el-input></el-form-item>
+                  <el-form-item label="合同名称：" prop="contractName"><el-input v-model="form.contractName" disabled></el-input></el-form-item>
                 </el-col>
               </el-row>
               <el-row>
                 <el-col :span="12">
-                  <el-form-item label="甲方：" prop="firstParty"><el-input v-model="form.firstParty"></el-input></el-form-item>
+                  <el-form-item label="甲方：" prop="firstParty"><el-input v-model="form.firstParty" disabled></el-input></el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="乙方：" prop="secondParty"><el-input v-model="form.secondParty"></el-input></el-form-item>
+                  <el-form-item label="乙方：" prop="secondParty"><el-input v-model="form.secondParty" disabled></el-input></el-form-item>
                 </el-col>
               </el-row>
               <el-row>
                 <el-col :span="12">
                   <el-form-item label="丙方：" prop="thirdParty"
                     :rules="this.form.contractTypes === '2'?[{ required: true, message: '请填写丙方信息', trigger: 'blur' }]:[]">
-                    <el-input v-model="form.thirdParty" :disabled="this.form.contractTypes !== '2'"></el-input>
+                    <el-input v-model="form.thirdParty" disabled></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
                   <el-form-item label="主合同：" prop="fatherNumber"
                     :rules="this.form.contractTypes === '3'?[{ required: true, message: '请选择主合同编码', trigger: 'change' }]:[]">
-                    <el-select v-model="form.fatherNumber" placeholder="请选择主合同" :disabled="this.form.contractTypes !== '3'">
+                    <el-select v-model="form.fatherNumber" placeholder="请选择主合同" disabled>
                       <el-option
                         v-for="item in contractInfo"
                         :key="item.contractId"
@@ -79,7 +79,7 @@
               <el-row>
                 <el-col :span="12">
                   <el-form-item label="合同性质：" prop="contractTypes">
-                    <el-select v-model="form.contractTypes" placeholder="请选择合同性质" @change="reset($event)">
+                    <el-select v-model="form.contractTypes" placeholder="请选择合同性质" @change="reset($event)" disabled>
                       <el-option label="直接合同" value="1"></el-option>
                       <el-option label="三方合同" value="2"></el-option>
                       <el-option label="补充合同" value="3"></el-option>
@@ -87,15 +87,15 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="签约时间：" prop="contractTime"><el-date-picker v-model="form.contractTime" type="datetime" placeholder="选择日期时间" default-time="12:00:00"></el-date-picker></el-form-item>
+                  <el-form-item label="签约时间：" prop="contractTime"><el-date-picker v-model="form.contractTime" type="datetime" placeholder="选择日期时间" default-time="12:00:00" disabled></el-date-picker></el-form-item>
                 </el-col>
               </el-row>
               <el-row>
                 <el-col :span="12">
-                  <el-form-item label="责任部门：" prop="dutyName"><el-input v-model="form.dutyName"></el-input></el-form-item>
+                  <el-form-item label="责任部门：" prop="dutyName"><el-input v-model="form.dutyName" disabled></el-input></el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="责任人：" prop="dutyUsername"><el-input v-model="form.dutyUsername"></el-input></el-form-item>
+                  <el-form-item label="责任人：" prop="dutyUsername"><el-input v-model="form.dutyUsername" disabled></el-input></el-form-item>
                 </el-col>
               </el-row>
               <el-row>
@@ -151,8 +151,8 @@
 </template>
 
 <script>
-import { selectFinish } from '../api/menu1/api'
-import { addContractInfo, addContractDetail, selectAllContractInfo } from '../api/menu2/api'
+import { selectAllItemInfo } from '../api/menu1/api'
+import { addContractInfo, selectAllContractInfo, selectContractByContractNumber, selectContractDetailByContractNumber, updateContractDetail } from '../api/menu2/api'
 export default {
   data () {
     return {
@@ -210,8 +210,8 @@ export default {
     },
     reset (prov) {
       this.$refs.form.clearValidate(['fatherNumber', 'thirdParty'])
-      this.form.fatherNumber = ''
-      this.form.thirdParty = ''
+      this.form.fatherNumber = null
+      this.form.thirdParty = null
     },
     goBack () {
       this.$router.push('/menu2_item1')
@@ -272,38 +272,37 @@ export default {
       }
     },
     async selectAllItemInfo () {
-      const data = await selectFinish()
+      const data = await selectAllItemInfo()
       this.itemInfo = data.data
     },
     async selectAllContractInfo () {
       const data = await selectAllContractInfo()
       this.contractInfo = data.data
     },
-    submit (form) {
-      this.$refs[form].validate(async (valid) => {
-        if (valid) {
-          if (this.form.contractNumber === this.form.fatherNumber) {
-            this.$message.error('主合同编码不能为自身编码')
-          } else {
-            for (let k in this.master_user.data) this.master_user.data[k].contractNumber = this.form.contractNumber
-            this.addContractInfo().then(async (res) => {
-              await addContractDetail(this.master_user.data)
-              this.$router.push('/menu2_item1')
-              this.$message.success('合同签订成功')
-            })
-          }
-        }
-      })
+    async submit (form) {
+      for (let k in this.master_user.data) this.master_user.data[k].contractNumber = this.form.contractNumber
+      await updateContractDetail(this.master_user.data)
+      this.$router.push('/menu2_item1')
+      this.$message.success('合同修改成功')
     },
     async addContractInfo () {
       await addContractInfo(this.form)
+    },
+    async init () {
+      const contractNumber = sessionStorage.getItem('contractNumber')
+      const data = await selectContractByContractNumber({contractNumber: contractNumber})
+      this.selectContractDetailByContractNumber(contractNumber)
+      this.form = data.data
+    },
+    async selectContractDetailByContractNumber (contractNumber) {
+      const data = await selectContractDetailByContractNumber({contractNumber: contractNumber})
+      this.master_user.data = data.data
     }
   },
   created () {
     this.selectAllItemInfo()
     this.selectAllContractInfo()
-    this.form.createTime = new Date()
-    this.form.createUsername = sessionStorage.getItem('user')
+    this.init()
   }
 }
 </script>

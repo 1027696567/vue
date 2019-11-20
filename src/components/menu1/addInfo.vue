@@ -123,7 +123,7 @@ export default {
         ],
         telephone: [
           {required: true, message: '请输入联系电话', trigger: 'blur'},
-          {type: 'number', message: '年龄必须为数字值'}
+          {type: 'number', message: '联系电话必须为数字值'}
         ]
       }
     }
@@ -142,8 +142,10 @@ export default {
               this.$refs[form].resetFields()
               this.dialogVisible = false
               this.parent()
+            } else if (res.data === 0) {
+              this.$message.error('已申请机构！，请不要重复申请')
             } else {
-              this.$message.error('机构已存在！')
+              this.$message.error('该机构已存在！')
             }
           })
         } else {

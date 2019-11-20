@@ -27,7 +27,6 @@ export default {
         if (res.status === 200) {
           this.$store.commit(types.LOGIN, res.data)
           this.api.getMenu().then((res) => {
-            console.log(res)
             sessionStorage.setItem('menuData', JSON.stringify(res.data.navData))
             sessionStorage.setItem('user', this.user.username)
             sessionStorage.setItem('routes', JSON.stringify(res.data.routerData))
@@ -36,7 +35,6 @@ export default {
           })
         } else if (res.status === 202) {
           this.$message.error('账号或密码错误')
-          console.log('账号已被锁定！')
         } else if (res.status === 203) {
           this.$message.error('账号已被锁定,请联系管理员!')
         }

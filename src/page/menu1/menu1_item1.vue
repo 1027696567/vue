@@ -8,13 +8,17 @@
           <el-button @click="addInfo">新建</el-button>
           <el-button @click="editInfo">修改</el-button>
           <el-button @click="verifyInfo" type="primary">审核</el-button>
-          <el-button @click="deleteInfo" type="danger">删除</el-button>
+          <el-button @click="deleteInfo" type="danger" disabled>删除</el-button>
         </div>
       </div>
       <el-main>
         <el-table strip border ref="singleTable" :data="tableData" highlight-current-row @current-change="handleCurrentChange" style="width: 100%">
           <el-table-column type="index" width="50"></el-table-column>
-          <el-table-column property="companyNumber" label="机构代码" width="180"></el-table-column>
+          <el-table-column label="机构代码" width="180" show-overflow-tooltip>
+            <template slot-scope="scope">
+              <el-button @click="companyDetail(scope.row)" type="text" style="text-decoration:underline" >{{ scope.row.companyNumber }}</el-button>
+            </template>
+          </el-table-column>
           <el-table-column property="companyName" label="机构名称" width="180"></el-table-column>
           <el-table-column property="contact" label="联系人" width="180"></el-table-column>
           <el-table-column property="telephone" label="联系电话" width="180"></el-table-column>
@@ -28,6 +32,7 @@
       <AddInfo v-if="addInfoVisible" ref="AddInfo"></AddInfo>
       <EditInfo v-if="editInfoVisible" ref="EditInfo"></EditInfo>
       <VerifyInfo v-if="verifyInfoVisible" ref="VerifyInfo"></VerifyInfo>
+      <CompanyDetail v-if="companyDetailVisible" ref="CompanyDetail"></CompanyDetail>
     </div>
 </template>
 
@@ -35,16 +40,18 @@
 import AddInfo from '../../components/menu1/addInfo'
 import EditInfo from '../../components/menu1/editInfo'
 import VerifyInfo from '../../components/menu1/verifyInfo'
+import CompanyDetail from '../../components/menu1/companyDetail'
 import { selectAllCompanyInfo, getAuthorization, deleteCompanyInfo } from '../../api/menu1/api'
 export default {
-  components: { AddInfo, EditInfo, VerifyInfo },
+  components: { AddInfo, EditInfo, VerifyInfo, CompanyDetail },
   data () {
     return {
       tableData: [],
       currentRow: null,
       addInfoVisible: false,
       editInfoVisible: false,
-      verifyInfoVisible: false
+      verifyInfoVisible: false,
+      companyDetailVisible: false
     }
   },
   methods: {
@@ -112,6 +119,12 @@ export default {
       } else {
         this.$message.error('请选择供应商')
       }
+    },
+    companyDetail (data) {
+      this.companyDetailVisible = true
+      this.$nextTick(() => {
+        this.$refs.CompanyDetail.init(data)
+      })
     }
   },
   created () {

@@ -95,7 +95,7 @@ export default {
     async getUser () {
       const data = await getUserList()
       this.tableData = data.data
-      console.log(this.tableData)
+      console.log(data.data)
     },
     handleEdit (index, row) {
       this.editUserVisible = true
