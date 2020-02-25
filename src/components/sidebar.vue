@@ -38,16 +38,16 @@ export default {
 </script>
 
 <style scoped>
-  .el-menu{
+.el-menu{
     border-right: solid 0px;
   }
 
-  .kongbai{
+.kongbai{
     height: 20px;
     width: 100%;
     background: white;
   }
-  .logo {
+.logo {
     font-family: '\5FAE\8F6F\96C5\9ED1   Bold', '\5FAE\8F6F\96C5\9ED1   Regular', '\5FAE\8F6F\96C5\9ED1';
     font-style: normal;
     font-size: 18px;
@@ -55,17 +55,17 @@ export default {
     line-height: 40px;
     background: white;
   }
-  .el-image{
+.el-image{
     width: 56px;
     height: 36px;
     margin-left:10px;
   }
-  .logo span {
+.logo span {
     display: inline-block;
     margin-left: 9px;
     line-height: 40px;
     position: relative;
     top: -10px;
     font-weight: 700;
-  }
+}
 </style>

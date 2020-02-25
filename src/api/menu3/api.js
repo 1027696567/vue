@@ -30,3 +30,19 @@ export function updateTask (data) {
     data: data
   })
 }
+
+export function addTaskReport (data) {
+  return http({
+    url: '/task/addTaskReport',
+    method: 'post',
+    data: data
+  })
+}
+
+export function deleteTaskInfo (data) {
+  return http({
+    url: '/task/deleteTaskInfo',
+    method: 'delete',
+    params: data
+  })
+}

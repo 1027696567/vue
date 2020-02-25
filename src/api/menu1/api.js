@@ -178,3 +178,11 @@ export function selectFinish (data) {
     method: 'get'
   })
 }
+
+export function selectItemInfo (data) {
+  return http({
+    url: '/company/selectItemInfo',
+    method: 'get',
+    params: data
+  })
+}

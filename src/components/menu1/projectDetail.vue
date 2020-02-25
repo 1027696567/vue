@@ -7,72 +7,72 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="项目编号：" prop="itemNumber" style="width:320px">
-              <el-input v-model="form.itemNumber" disabled></el-input>
+              <el-input v-model="form.itemNumber" readOnly></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="项目名称：" prop="itemName" style="width:320px">
-              <el-input v-model="form.itemName" disabled></el-input>
+              <el-input v-model="form.itemName" readOnly></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="招标人：" prop="username" style="width:320px">
-              <el-input v-model="form.username" disabled></el-input>
+              <el-input v-model="form.username" readOnly></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="项目类别：" prop="itemClassesName" style="width:320px">
-              <el-input v-model="form.itemClassesName" disabled></el-input>
+              <el-input v-model="form.itemClassesName" readOnly></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="招标地址：" prop="address" style="width:320px">
-              <el-input v-model="form.address" disabled></el-input>
+              <el-input v-model="form.address" readOnly></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="电子邮箱：" prop="email" style="width:320px">
-              <el-input v-model="form.email" disabled></el-input>
+              <el-input v-model="form.email" readOnly></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="联系人：" prop="contact" style="width:320px">
-              <el-input v-model="form.contact" disabled></el-input>
+              <el-input v-model="form.contact" readOnly></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="联系电话：" prop="telephone" style="width:320px">
-              <el-input v-model="form.telephone" disabled></el-input>
+              <el-input v-model="form.telephone" readOnly></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="传真：" prop="fax" style="width:320px">
-              <el-input v-model="form.fax" disabled></el-input>
+              <el-input v-model="form.fax" readOnly></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="招标时间：" prop="beginTime" style="width:320px">
-              <el-input v-model="form.beginTime" disabled></el-input>
+              <el-input v-model="form.beginTime" readOnly></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="截止时间：" prop="endTime" style="width:320px">
-              <el-input v-model="form.endTime" disabled></el-input>
+              <el-input v-model="form.endTime" readOnly></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="项目状态：" prop="statusName" style="width:320px">
-              <el-input v-model="form.statusName" disabled></el-input>
+              <el-input v-model="form.statusName" readOnly></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -123,13 +123,13 @@ export default {
 }
 </script>
 <style>
-.el-form-item__label {
+.projectDetail .el-form-item__label {
   width: 95px!important;
   padding: 0 5px 0 5px!important;
   webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-.el-form-item__content {
+.projectDetail .el-form-item__content {
   margin-left: 95px!important;
 }
 </style>

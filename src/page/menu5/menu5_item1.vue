@@ -63,7 +63,7 @@
                 <el-button
                   size="mini"
                   type="danger"
-                  @click="handleDelete(scope.$index, scope.row)" :disabled="scope.row.status === '禁用'">删除</el-button>
+                  @click="handleDelete(scope.$index, scope.row)" :disabled="scope.row.status === '禁用'">禁用</el-button>
               </template>
             </el-table-column>
         </el-table>
@@ -95,14 +95,12 @@ export default {
     async getUser () {
       const data = await getUserList()
       this.tableData = data.data
-      console.log(data.data)
     },
     handleEdit (index, row) {
       this.editUserVisible = true
       this.$nextTick(() => {
-        this.$refs.EditUser.init()
+        this.$refs.EditUser.init(row)
       })
-      console.log(index, row)
     },
     async handleDelete (index, row) {
       await deleteUser(row.userId)

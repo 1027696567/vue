@@ -112,6 +112,7 @@
 import { selectFinish } from '../../api/menu1/api'
 import { addTask, selectAll } from '../../api/menu3/api'
 export default {
+  inject: ['reload'],
   data () {
     return {
       dialogVisible: false,
@@ -206,7 +207,7 @@ export default {
           await addTask(this.form)
           this.$message.success('新建成功')
           this.dialogVisible = false
-          this.parent()
+          this.reload()
         } else {
           return false
         }
@@ -239,13 +240,13 @@ export default {
 }
 </script>
 <style>
-.el-form-item__label {
+.addTaskInfo .el-form-item__label {
   width: 95px!important;
   padding: 0 5px 0 5px!important;
   webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-.el-form-item__content {
+.addTaskInfo .el-form-item__content {
   margin-left: 95px!important;
 }
 </style>

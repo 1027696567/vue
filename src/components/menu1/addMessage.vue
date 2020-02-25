@@ -1,23 +1,23 @@
 <template>
-  <div class="editInfo">
-    <!-- 审核供应商信息弹框 -->
+  <div class="addMessage">
+    <!-- 发布信息弹框 -->
     <el-dialog title="发布信息" :visible.sync="dialogVisible" width="1000px" :before-close="closeDiv">
       <h1 style="-webkit-margin-before: 0px;">发布信息</h1>
       <el-form label-position="right" ref="form" :model="form" label-width="80px">
         <el-row>
           <el-col :span="8">
             <el-form-item label="发布人名称：" prop="publishUsername" style="width:300px">
-              <el-input v-model="form.publishUsername" disabled></el-input>
+              <el-input v-model="form.publishUsername" readOnly></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="发布人职位：" prop="roles" style="width:300px">
-              <el-input v-model="form.roles" disabled></el-input>
+              <el-input v-model="form.roles" readOnly></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="发布时间：" prop="publishTime" style="width:300px">
-              <el-date-picker v-model="form.publishTime" type="datetime" placeholder="请选择时间" default-time="12:00:00" style="width:205px" disabled>
+              <el-date-picker v-model="form.publishTime" type="datetime" placeholder="请选择时间" default-time="12:00:00" style="width:205px" readOnly>
               </el-date-picker>
             </el-form-item>
           </el-col>
@@ -25,7 +25,7 @@
         <el-row>
           <el-col :span="24">
             <el-form-item label="发布人单位：" prop="companyName" style="width:619.5px">
-              <el-input v-model="form.companyName" disabled></el-input>
+              <el-input v-model="form.companyName" readOnly></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -122,13 +122,13 @@ export default {
 }
 </script>
 <style>
-.el-form-item__label {
+.addMessage .el-form-item__label {
   width: 95px!important;
   padding: 0 5px 0 5px!important;
   webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-.el-form-item__content {
+.addMessage .el-form-item__content {
   margin-left: 95px!important;
 }
 </style>

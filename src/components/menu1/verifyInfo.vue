@@ -1,5 +1,5 @@
 <template>
-  <div class="editInfo">
+  <div class="verifyInfo">
     <!-- 审核供应商信息弹框 -->
     <el-dialog title="审核" :visible.sync="dialogVisible" width="700px">
       <h1 style="-webkit-margin-before: 0px;">供应商信息</h1>
@@ -7,60 +7,60 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="机构代码：" prop="companyNumber" style="width:320px">
-              <el-input v-model="form.companyNumber" disabled></el-input>
+              <el-input v-model="form.companyNumber" readOnly></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="机构名称：" prop="companyName" style="width:320px">
-              <el-input v-model="form.companyName" disabled></el-input>
+              <el-input v-model="form.companyName" readOnly></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="注册地：" prop="registeredPlace" style="width:320px">
-              <el-input v-model="form.registeredPlace" disabled></el-input>
+              <el-input v-model="form.registeredPlace" readOnly></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="评级资质：" prop="creditRating" style="width:320px">
-              <el-input v-model="form.creditRating" disabled></el-input>
+              <el-input v-model="form.creditRating" readOnly></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="法人代表：" prop="corporateRepresentative" style="width:320px">
-              <el-input v-model="form.corporateRepresentative" disabled></el-input>
+              <el-input v-model="form.corporateRepresentative" readOnly></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="固定资产：" prop="permanentAssets" style="width:320px">
-              <el-input v-model="form.permanentAssets" disabled></el-input>
+              <el-input v-model="form.permanentAssets" readOnly></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="E-mail：" prop="email" style="width:320px">
-              <el-input v-model="form.email" disabled></el-input>
+              <el-input v-model="form.email" readOnly></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="传真：" prop="fax" style="width:320px">
-              <el-input v-model="form.fax" disabled></el-input>
+              <el-input v-model="form.fax" readOnly></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="联系人：" prop="contact" style="width:320px">
-              <el-input v-model="form.contact" disabled></el-input>
+              <el-input v-model="form.contact" readOnly></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="联系电话：" prop="telephone" style="width:320px">
-              <el-input v-model.number="form.telephone" disabled></el-input>
+              <el-input v-model.number="form.telephone" readOnly></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -157,13 +157,13 @@ export default {
 }
 </script>
 <style>
-.el-form-item__label {
+.verifyInfo .el-form-item__label {
   width: 95px!important;
   padding: 0 5px 0 5px!important;
   webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-.el-form-item__content {
+.verifyInfo .el-form-item__content {
   margin-left: 95px!important;
 }
 </style>

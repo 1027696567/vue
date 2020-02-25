@@ -200,13 +200,13 @@ export default {
 }
 </script>
 <style>
-.el-form-item__label {
+.addProject .el-form-item__label {
   width: 95px!important;
   padding: 0 5px 0 5px!important;
   webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-.el-form-item__content {
+.addProject .el-form-item__content {
   margin-left: 95px!important;
 }
 </style>

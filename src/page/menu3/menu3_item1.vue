@@ -6,10 +6,10 @@
       <div class="topHead">
         <div class="buttonList">
           <el-button @click="addTask">新建任务</el-button>
-          <el-button @click="addTask">进度汇报</el-button>
+          <el-button @click="addTaskReport">进度汇报</el-button>
           <el-button @click="upTask">升级</el-button>
           <el-button @click="downTask">降级</el-button>
-          <el-button type="primary">删除</el-button>
+          <el-button @click="deleteTaskInfo" type="primary">删除</el-button>
         </div>
       </div>
       <el-main>
@@ -27,19 +27,23 @@
         </el-table>
       </el-main>
     <AddTask ref="AddTask" v-if="addTaskVisible"></AddTask>
+    <AddTaskReport ref="AddTaskReport" v-if="addTaskReportVisible"></AddTaskReport>
     </div>
 </template>
 
 <script>
-import { selectAll, selectChildren, updateTask } from '../../api/menu3/api'
+import { selectAll, selectChildren, updateTask, deleteTaskInfo } from '../../api/menu3/api'
 import AddTask from '../../components/menu3/addTask'
+import AddTaskReport from '../../components/menu3/addTaskReport'
 export default {
-  components: { AddTask },
+  components: { AddTask, AddTaskReport },
+  inject: ['reload'],
   data () {
     return {
       tableData: [],
       currentRow: null,
-      addTaskVisible: false
+      addTaskVisible: false,
+      addTaskReportVisible: false
     }
   },
   methods: {
@@ -57,13 +61,23 @@ export default {
       setTimeout(async () => {
         const data = await selectChildren({taskNumber: tree.taskNumber})
         resolve(data.data)
-      }, 1000)
+      }, 500)
     },
     addTask () {
       this.addTaskVisible = true
       this.$nextTick(() => {
         this.$refs.AddTask.init()
       })
+    },
+    addTaskReport () {
+      if (this.currentRow !== null) {
+        this.addTaskReportVisible = true
+        this.$nextTick(() => {
+          this.$refs.AddTaskReport.init(this.currentRow)
+        })
+      } else {
+        this.$message.error('请选择一项任务')
+      }
     },
     tableRowClassName ({row, rowIndex}) {
       if (row.hasChildren === false) {
@@ -72,32 +86,53 @@ export default {
       return ''
     },
     async upTask () {
-      if (this.currentRow.taskPriority === 'Ⅱ级') {
-        this.currentRow.taskPriority = 'Ⅰ级'
-        await updateTask(this.currentRow)
-        this.$message.success('升级成功')
-      } else if (this.currentRow.taskPriority === 'Ⅲ级') {
-        this.currentRow.taskPriority = 'Ⅱ级'
-        await updateTask(this.currentRow)
-        this.$message.success('升级成功')
+      if (this.currentRow != null) {
+        if (this.currentRow.taskPriority === 'Ⅱ级') {
+          this.currentRow.taskPriority = 'Ⅰ级'
+          await updateTask(this.currentRow)
+          this.$message.success('升级成功')
+        } else if (this.currentRow.taskPriority === 'Ⅲ级') {
+          this.currentRow.taskPriority = 'Ⅱ级'
+          await updateTask(this.currentRow)
+          this.$message.success('升级成功')
+        } else {
+          this.$message.error('优先级已最高')
+        }
+        this.selectAll()
       } else {
-        this.$message.error('优先级已最高')
+        this.$message.error('请选择一项任务')
       }
-      this.selectAll()
     },
     async downTask () {
-      if (this.currentRow.taskPriority === 'Ⅱ级') {
-        this.currentRow.taskPriority = 'Ⅲ级'
-        await updateTask(this.currentRow)
-        this.$message.success('降级成功')
-      } else if (this.currentRow.taskPriority === 'Ⅰ级') {
-        this.currentRow.taskPriority = 'Ⅱ级'
-        await updateTask(this.currentRow)
-        this.$message.success('降级成功')
+      if (this.currentRow != null) {
+        if (this.currentRow.taskPriority === 'Ⅱ级') {
+          this.currentRow.taskPriority = 'Ⅲ级'
+          await updateTask(this.currentRow)
+          this.$message.success('降级成功')
+        } else if (this.currentRow.taskPriority === 'Ⅰ级') {
+          this.currentRow.taskPriority = 'Ⅱ级'
+          await updateTask(this.currentRow)
+          this.$message.success('降级成功')
+        } else {
+          this.$message.error('优先级已最低')
+        }
+        this.selectAll()
       } else {
-        this.$message.error('优先级已最低')
+        this.$message.error('请选择一项任务')
       }
-      this.selectAll()
+    },
+    deleteTaskInfo () {
+      if (this.currentRow !== null) {
+        this.$confirm('此操作不可恢复，确认继续？')
+          .then(async _ => {
+            await deleteTaskInfo({taskId: this.currentRow.taskId})
+            this.reload()
+            this.$message.success('删除成功')
+          })
+          .catch(_ => {})
+      } else {
+        this.$message.error('请选择一项任务')
+      }
     }
   },
   created () {

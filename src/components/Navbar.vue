@@ -70,6 +70,7 @@ export default {
       sessionStorage.removeItem('user')
       sessionStorage.removeItem('menuData')
       sessionStorage.removeItem('itemId')
+      sessionStorage.removeItem('costItemNumber')
       this.$router.push('/login')
     }
   },
@@ -86,7 +87,7 @@ export default {
   font-size: 29px;
   color: black;
 }
-.block{
+.outPatientName .block{
   width: 25%;
   height: 60px;
   min-width: 410px;
@@ -94,14 +95,14 @@ export default {
   position: relative;
   overflow: hidden;
 }
-.el-autocomplete{
+.outPatientName .el-autocomplete{
   float: left;
   height: 60px;
   width: 200px;
   position: relative;
   margin-top: -6px;
 }
-.el-dropdown{
+.outPatientName .el-dropdown{
   width: auto;
   height: 60px;
   float: right;
@@ -113,7 +114,7 @@ export default {
   -o-box-sizing: border-box;
   -ms-box-sizing: border-box;
 }
-.el-dropdown-link-one {
+.outPatientName .el-dropdown-link-one {
   height: 60px;
   position: relative;
   box-sizing: border-box;
@@ -124,7 +125,7 @@ export default {
   cursor: pointer;
   color: #409EFF;
   }
-.el-dropdown-link-two{
+.outPatientName .el-dropdown-link-two{
   padding-left: 10px;
   vertical-align: middle;
   float: left;
@@ -133,17 +134,17 @@ export default {
   position: relative;
   cursor: pointer;
 }
-.el-icon-arrow-down {
+.outPatientName .el-icon-arrow-down {
   font-size: 12px;
 }
-.avatar{
+.outPatientName .avatar{
   height: 60px;
   width: auto;
   float: left;
   padding: 8px 5px 10px 5px;
   box-sizing:border-box;
 }
-.el-autocomplete-suggestion{
+.outPatientName .el-autocomplete-suggestion{
   width: 400px!important;
 }
 </style>

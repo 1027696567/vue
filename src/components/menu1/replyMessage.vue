@@ -1,5 +1,5 @@
 <template>
-  <div class="editInfo">
+  <div class="replyMessage">
     <!-- 审核供应商信息弹框 -->
     <el-dialog title="发布信息" :visible.sync="dialogVisible" width="1000px" :before-close="closeDiv">
       <h1 style="-webkit-margin-before: 0px;">发布信息</h1>
@@ -7,12 +7,12 @@
         <el-row>
           <el-col :span="8">
             <el-form-item label="发布人名称：" prop="publishUsername" style="width:300px">
-              <el-input v-model="form.publishUsername" disabled></el-input>
+              <el-input v-model="form.publishUsername" readOnly></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="发布人职位：" prop="roles" style="width:300px">
-              <el-input v-model="form.roles" disabled></el-input>
+              <el-input v-model="form.roles" readOnly></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -25,14 +25,14 @@
         <el-row>
           <el-col :span="24">
             <el-form-item label="发布人单位：" prop="companyName" style="width:619.5px">
-              <el-input v-model="form.companyName" disabled></el-input>
+              <el-input v-model="form.companyName" readOnly></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
             <el-form-item label="发布内容：" prop="publishContent" style="width:939px">
-              <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}" placeholder="请输入发布信息" resize=none v-model="form.publishContent" disabled></el-input>
+              <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}" placeholder="请输入发布信息" resize=none v-model="form.publishContent" readOnly></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -40,12 +40,12 @@
         <el-row>
           <el-col :span="8">
             <el-form-item label="回复人名称：" prop="replyUsername" style="width:300px">
-              <el-input v-model="form.replyUsername" disabled></el-input>
+              <el-input v-model="form.replyUsername" readOnly></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="回复人职位：" prop="replyRoles" style="width:300px">
-              <el-input v-model="form.replyRoles" disabled></el-input>
+              <el-input v-model="form.replyRoles" readOnly></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -58,7 +58,7 @@
         <el-row>
           <el-col :span="24">
             <el-form-item label="回复人单位：" prop="replyCompanyName" style="width:619.5px">
-              <el-input v-model="form.replyCompanyName" disabled></el-input>
+              <el-input v-model="form.replyCompanyName" readOnly></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -84,7 +84,8 @@ export default {
     return {
       dialogVisible: false,
       form: {
-        replyContent: ''
+        replyContent: '',
+        replyTime: ''
       }
     }
   },
@@ -128,13 +129,13 @@ export default {
 }
 </script>
 <style>
-.el-form-item__label {
+.replyMessage .el-form-item__label {
   width: 95px!important;
   padding: 0 5px 0 5px!important;
   webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-.el-form-item__content {
+.replyMessage .el-form-item__content {
   margin-left: 95px!important;
 }
 </style>

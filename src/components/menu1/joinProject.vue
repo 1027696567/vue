@@ -1,24 +1,24 @@
 <template>
-  <div class="addInfo">
+  <div class="joinProject">
     <!-- 添加投标信息弹框 -->
     <el-dialog title="报名" :visible.sync="dialogVisible" width="700px">
       <el-form label-position="right" ref="form" :model="form" label-width="80px">
         <el-row>
           <el-col :span="12">
             <el-form-item label="机构代码：" prop="companyNumber" style="width:320px">
-              <el-input v-model="form.companyNumber" disabled></el-input>
+              <el-input v-model="form.companyNumber" readOnly></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="机构名称：" prop="companyName" style="width:320px">
-              <el-input v-model="form.companyName" disabled></el-input>
+              <el-input v-model="form.companyName" readOnly></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="投标人：" prop="createUserName" style="width:320px">
-              <el-input v-model="form.createUserName" disabled></el-input>
+              <el-input v-model="form.createUserName" readOnly></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -107,13 +107,13 @@ export default {
 }
 </script>
 <style>
-.el-form-item__label {
+.joinProject .el-form-item__label {
   width: 95px!important;
   padding: 0 5px 0 5px!important;
   webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-.el-form-item__content {
+.joinProject .el-form-item__content {
   margin-left: 95px!important;
 }
 </style>

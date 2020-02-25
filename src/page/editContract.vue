@@ -1,5 +1,5 @@
 <template>
-    <div class="editProject">
+    <div class="editContract">
     <!-- 变更合同页面 -->
       <div class="blank">
       </div>
@@ -312,7 +312,7 @@ export default {
     min-width: 1000px;
     overflow: hidden;
   }
-  .editProject{
+  .editContract{
     width: 100%;
     height: auto;
     padding:0 15% 0 15%;
@@ -326,13 +326,13 @@ export default {
     width:100%;
     height:15px;
   }
-  .el-form-item__label {
+ .editContract .el-form-item__label {
     width: 95px!important;
     padding: 0 5px 0 5px!important;
     webkit-box-sizing: border-box;
     box-sizing: border-box;
   }
-  .el-form-item__content {
+ .editContract .el-form-item__content {
     margin-left: 95px!important;
   }
   .submit {
@@ -351,7 +351,7 @@ export default {
     -ms-box-sizing: border-box;
     overflow: hidden;
   }
-  .el-table-add-row {
+ .editContract .el-table-add-row {
     margin-top: 10px;
     width: 100%;
     height: 34px;

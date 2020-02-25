@@ -36,12 +36,13 @@ axios.interceptors.response.use(
           break
         case 402:
           // 401 清除token信息并跳转到登录页面
-          // store.commit(types.LOGOUT)
           ElementUI.Message.error(error.response.data)
           Store.commit(types.LOGOUT)
           sessionStorage.removeItem('routes')
           sessionStorage.removeItem('user')
           sessionStorage.removeItem('menuData')
+          sessionStorage.removeItem('itemId')
+          sessionStorage.removeItem('costItemNumber')
           // 只有在当前路由不是登录页面才跳转
           router.currentRoute.path !== 'login' &&
           router.replace({

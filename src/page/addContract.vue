@@ -1,5 +1,5 @@
 <template>
-    <div class="editProject">
+    <div class="addContract">
     <!-- 签订合同页面 -->
       <div class="blank">
       </div>
@@ -100,7 +100,7 @@
               </el-row>
               <el-row>
                 <el-col :span="12">
-                  <el-form-item label="制单人：" prop="createUsername"><el-input v-model="form.createUsername" disabled></el-input></el-form-item>
+                  <el-form-item label="制单人：" prop="createUsername"><el-input v-model="form.createUsername" readOnly></el-input></el-form-item>
                 </el-col>
                 <el-col :span="12">
                   <el-form-item label="制单时间：" prop="createTime"><el-date-picker v-model="form.createTime" type="datetime" placeholder="选择日期时间" default-time="12:00:00" disabled></el-date-picker></el-form-item>
@@ -313,7 +313,7 @@ export default {
     min-width: 1000px;
     overflow: hidden;
   }
-  .editProject{
+  .addContract{
     width: 100%;
     height: auto;
     padding:0 15% 0 15%;
@@ -327,13 +327,13 @@ export default {
     width:100%;
     height:15px;
   }
-  .el-form-item__label {
+ .addContract .el-form-item__label {
     width: 95px!important;
     padding: 0 5px 0 5px!important;
     webkit-box-sizing: border-box;
     box-sizing: border-box;
   }
-  .el-form-item__content {
+ .addContract .el-form-item__content {
     margin-left: 95px!important;
   }
   .submit {
@@ -352,7 +352,7 @@ export default {
     -ms-box-sizing: border-box;
     overflow: hidden;
   }
-  .el-table-add-row {
+ .addContract .el-table-add-row {
     margin-top: 10px;
     width: 100%;
     height: 34px;

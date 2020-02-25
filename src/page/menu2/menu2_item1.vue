@@ -29,6 +29,7 @@
 <script>
 import { selectAllContractInfo, selectChildren, deleteContract } from '../../api/menu2/api'
 export default {
+  inject: ['reload'],
   data () {
     return {
       tableData: [],
@@ -53,7 +54,7 @@ export default {
       setTimeout(async () => {
         const data = await selectChildren({fatherNumber: tree.contractNumber})
         resolve(data.data)
-      }, 1000)
+      }, 500)
     },
     editContract () {
       if (this.currentRow !== null) {
@@ -63,16 +64,13 @@ export default {
         this.$message.error('请选择一项合同')
       }
     },
-    deleteContract () {
+    deleteContract (table) {
       if (this.currentRow !== null) {
         this.$confirm('此操作不可恢复，确认继续？')
-          .then(_ => {
-            this.verifyInfoVisible = true
-            this.$nextTick(async () => {
-              await deleteContract(this.currentRow)
-              this.selectAllContractInfo()
-              this.$message.success('解除成功')
-            })
+          .then(async _ => {
+            await deleteContract(this.currentRow)
+            this.reload()
+            this.$message.success('解除成功')
           })
           .catch(_ => {})
       } else {

@@ -21,4 +21,27 @@ export function deleteUser (userId) {
     method: 'put'
   })
 }
+
+export function getLogList (data) {
+  return http({
+    url: '/log/getLogList',
+    method: 'get'
+  })
+}
+
+export function register (data) {
+  return http({
+    url: '/register',
+    method: 'post',
+    data: data
+  })
+}
+
+export function updateRole (data) {
+  return http({
+    url: '/updateRole',
+    method: 'put',
+    data: data
+  })
+}
 export default api

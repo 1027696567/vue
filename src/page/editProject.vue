@@ -15,7 +15,7 @@
             <el-collapse-item title="项目信息" name="1">
               <el-row>
                 <el-col :span="8">
-                  <el-form-item label="项目编号："><el-input v-model="form.itemNumber" disabled></el-input></el-form-item>
+                  <el-form-item label="项目编号："><el-input v-model="form.itemNumber" readOnly></el-input></el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="项目名称："><el-input v-model="form.itemName"></el-input></el-form-item>
@@ -32,7 +32,7 @@
               </el-row>
               <el-row>
                 <el-col :span="10">
-                  <el-form-item label="招标人："><el-input v-model="form.username" disabled></el-input></el-form-item>
+                  <el-form-item label="招标人："><el-input v-model="form.username" readOnly></el-input></el-form-item>
                 </el-col>
                 <el-col :span="10">
                   <el-form-item label="招标地址："><el-input v-model="form.address"></el-input></el-form-item>
@@ -182,13 +182,13 @@ export default {
     width:100%;
     height:15px;
   }
-  .el-form-item__label {
+ .editProject .el-form-item__label {
     width: 95px!important;
     padding: 0 5px 0 5px!important;
     webkit-box-sizing: border-box;
     box-sizing: border-box;
   }
-  .el-form-item__content {
+ .editProject .el-form-item__content {
     margin-left: 95px!important;
   }
   .submit {

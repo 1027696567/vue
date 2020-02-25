@@ -5,7 +5,6 @@
       </div>
       <div class="topHead">
         <div class="buttonList">
-          <el-button @click="addProject">发布公告</el-button>
           <el-button @click="addProject">发布新标</el-button>
           <el-button @click="editProject" type="primary">修改</el-button>
           <el-button @click="joinProject" type="primary">投标</el-button>
